@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title></title>
+        <meta charset="UTF-8">
+        <title>Mouse Events</title>
+        <link href="css/style.css" rel="stylesheet">
+    </head>
+    <body>
+        <canvas id="canvas" width="400" height="400"></canvas>
+
+        <script>
+            window.onload =function () {
+                var canvas =document.getElementById('canvas');
+
+                function OnMouseEvent (event) {
+                    console.log(event.type);
+                }
+
+                canvas.addEventListener('mousedown', OnMouseEvent, false);
+                canvas.addEventListener('mouseup', OnMouseEvent, false);
+                canvas.addEventListener('click', OnMouseEvent, false);
+                canvas.addEventListener('dbclick', OnMouseEvent, false);
+                canvas.addEventListener('mousewhell', OnMouseEvent, false);
+                canvas.addEventListener('mousemove', OnMouseEvent, false);
+                canvas.addEventListener('mouseover', OnMouseEvent, false);
+                canvas.addEventListener('mouseout', OnMouseEvent, false);
+            }
+        </script>
+    </body>
+</html>
