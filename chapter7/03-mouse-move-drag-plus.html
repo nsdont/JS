@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title></title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="../include/style.css" rel="stylesheet">
+    </head>
+    <body>
+        <canvas id="canvas" width="400" height="400"></canvas>
+        <script src="../utils.js"></script>
+        <script src="../ball.js"></script>
+        <script>
+            // 解决点击小球边缘，会让小球的中心点跳到鼠标光标的位置
+            window.onload = function () {
+                var canvas = document.getElementById('canvas'),
+                    context = canvas.getContext('2d'),
+                    mouse = utils.captureMouse(canvas),
+                    ball = new Ball(),
+                    distanceX = 0,
+                    distanceY = 0;
+
+                ball.x = canvas.width / 2;
+                ball.y = canvas.height / 2;
+
+                function onMouseMove() {
+                    ball.x = mouse.x - distanceX;
+                    ball.y = mouse.y - distanceY;
+                }
+
+                function onMouseUp(){
+                    canvas.removeEventListener('mouseup', onMouseUp, false);
+                    canvas.removeEventListener('mousemove', onMouseMove, false);
+                }
+
+                canvas.addEventListener('mousedown', function () {
+                    if (utils.containsPoint(ball.getBounds(), mouse.x, mouse.y)) {
+                        distanceX = mouse.x - ball.x;
+                        distanceY = mouse.y - ball.y;
+                        canvas.addEventListener('mouseup', onMouseUp, false);
+                        canvas.addEventListener('mousemove', onMouseMove, false);
+                    }
+                }, false);
+
+                (function drawFrame() {
+                    window.requestAnimationFrame(drawFrame, canvas);
+                    context.clearRect(0, 0, canvas.width, canvas.height);
+                    ball.draw(context);
+                }())
+            }
+        </script>
+    </body>
+</html>
+

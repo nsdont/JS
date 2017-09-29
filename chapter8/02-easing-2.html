@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title></title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="../include/style.css" rel="stylesheet">
+    </head>
+    <body>
+        <canvas id="canvas" width="400" height="400"></canvas>
+        <script src="../utils.js"></script>
+        <script src="../ball.js"></script>
+        <script>
+            window.onload = function () {
+                var canvas = document.getElementById('canvas'),
+                    context = canvas.getContext('2d'),
+                    mouse = utils.captureMouse(canvas),
+                    targetX = 0,
+                    targetY = 0,
+                    easing = 0.05,
+                    ball = new Ball(),
+                    isMouseDown = false;
+
+                ball.x = canvas.width / 4;
+                ball.y = canvas.height / 4;
+                targetX = ball.x + canvas.width / 2;
+                targetY = ball.y + canvas.height / 2;
+
+                function onMouseMove() {
+                    ball.x = mouse.x;
+                    ball.y = mouse.y;
+                }
+
+                function onMouseUp(){
+                    isMouseDown = false;
+                    vx = vy = 0;
+                    canvas.removeEventListener('mouseup', onMouseUp, false);
+                    canvas.removeEventListener('mousemove', onMouseMove, false);
+                }
+
+                canvas.addEventListener('mousedown', function () {
+                    if (utils.containsPoint(ball.getBounds(), mouse.x, mouse.y)) {
+                        isMouseDown = true;
+                        canvas.addEventListener('mouseup', onMouseUp, false);
+                        canvas.addEventListener('mousemove', onMouseMove, false);
+                    }
+                }, false);
+
+                (function drawFrame() {
+                    window.requestAnimationFrame(drawFrame, canvas);
+                    context.clearRect(0, 0, canvas.width, canvas.height);
+
+                    if (!isMouseDown) {
+                        ball.x += (targetX - ball.x) * easing;
+                        ball.y += (targetY - ball.y) * easing;
+                    }
+
+                    ball.draw(context);
+                }())
+            }
+        </script>
+    </body>
+</html>
+

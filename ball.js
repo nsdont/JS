@@ -4,12 +4,15 @@ function Ball(radius, color) {
 
     this.x = 0;
     this.y = 0;
+    this.mass = 1;
     this.radius = radius;
     this.rotation = 0;
     this.scaleX = 1;
     this.scaleY = 1;
     this.color = color;
     this.lineWidth = 1;
+    this.vx = 0;
+    this.vy = 0;
 }
 
 Ball.prototype.draw = function (context) {
@@ -28,3 +31,12 @@ Ball.prototype.draw = function (context) {
     }
     context.restore();
 }
+
+Ball.prototype.getBounds = function () {
+    return {
+        x: this.x - this.radius,
+        y: this.y - this.radius,
+        width: this.radius * 2,
+        height: this.radius * 2,
+    };
+};

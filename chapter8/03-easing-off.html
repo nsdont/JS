@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title></title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="../include/style.css" rel="stylesheet">
+    </head>
+    <body>
+        <canvas id="canvas" width="400" height="400"></canvas>
+        <script src="../utils.js"></script>
+        <script src="../ball.js"></script>
+        <script>
+            window.onload = function () {
+                var canvas = document.getElementById('canvas'),
+                    context = canvas.getContext('2d'),
+                    targetX = 0,
+                    easing = 0.05,
+                    ball = new Ball(),
+                    animRequest;
+
+                ball.x = canvas.width / 4;
+                ball.y = canvas.height / 2;
+                targetX = ball.x + canvas.width / 2;
+
+                (function drawFrame() {
+                    animRequest = window.requestAnimationFrame(drawFrame, canvas);
+                    context.clearRect(0, 0, canvas.width, canvas.height);
+
+                    if (Math.abs(targetX - ball.x) < 1) {
+                        ball.x = targetX;
+                        window.cancelAnimationFrame(animRequest);
+                        alert('done')
+                    } else {
+                        ball.x += (targetX - ball.x) * easing;
+                    }
+
+                    ball.draw(context);
+                }())
+            }
+        </script>
+    </body>
+</html>
+
